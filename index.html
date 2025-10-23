@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مترجم ARN إلى بروتين - أناجين</title>
+    <style>
+        :root {
+            --primary: #163f3b;
+            --secondary: #e9c46a;
+            --dark: #1d3557;
+            --darker: #14213d;
+            --light: #f1faee;
+            --accent: #e63946;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--dark), var(--primary));
+            padding: 20px 0;
+            border-bottom: 3px solid var(--secondary);
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            color: var(--light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section, .output-section {
+            background-color: var(--dark);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .input-control {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .input-control label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+        
+        select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            color: var(--light);
+            font-size: 1.1rem;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(233, 196, 106, 0.3);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .translate-btn {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        .translate-btn:hover {
+            background-color: #23867a;
+            transform: translateY(-2px);
+        }
+        
+        .clear-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+        
+        .clear-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .example-btn {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .example-btn:hover {
+            background-color: #d4af5a;
+        }
+        
+        .table-toggle-btn {
+            background-color: #8d99ae;
+            color: var(--light);
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .table-toggle-btn:hover {
+            background-color: #7a8599;
+        }
+        
+        .result-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid var(--primary);
+            min-height: 150px;
+        }
+        
+        .protein-sequence {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--secondary);
+            word-break: break-all;
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            background-color: rgba(42, 157, 143, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .info-title {
+            color: var(--secondary);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .translation-table-container {
+            margin-top: 20px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            max-height: 0;
+        }
+        
+        .translation-table-container.show {
+            max-height: 1000px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: var(--light);
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        tr:hover {
+            background-color: rgba(42, 157, 143, 0.2);
+        }
+        
+        .codon {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        
+        .amino-acid {
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .creator {
+            color: var(--secondary);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .error {
+            color: var(--accent);
+            background-color: rgba(230, 57, 70, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .success {
+            color: var(--secondary);
+            background-color: rgba(42, 157, 143, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .sequence-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .disabled-note {
+            color: var(--secondary);
+            font-style: italic;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .example-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+                <h1>مترجم ARN إلى بروتين</h1>
+            </div>
+            <div class="subtitle">أداة محاكاة لبرنامج أناجين - ترجمة تسلسل ARN إلى بروتين</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="input-section">
+                <h2 class="section-title"> إدخال تسلسل ARN</h2>
+                
+                <div class="input-controls">
+                    <div class="input-control">
+                        <label for="sequence-type">نوع التسلسل:</label>
+                        <select id="sequence-type" onchange="toggleSequenceOptions()">
+                            <option value="rna" selected>ARN</option>
+                            <option value="dna">ADN</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-control">
+                        <label for="direction">اتجاه القراءة:</label>
+                        <select id="direction">
+                            <option value="5-3">5' → 3'</option>
+                            <option value="3-5">3' → 5'</option>
+                        </select>
+                        <div class="disabled-note" id="direction-note">(لـ RNA: 5' → 3' فقط)</div>
+                    </div>
+                </div>
+                
+                <textarea id="sequence-input" placeholder="أدخل تسلسل ARN هنا (مثال: AUGUUUUCUAAA...)"></textarea>
+                
+                <div class="sequence-info">
+                    <span id="sequence-length">الطول: 0 قاعدة</span>
+                    <span id="sequence-valid">صالح: نعم</span>
+                </div>
+                
+                <div class="buttons">
+                    <button class="translate-btn" onclick="translateSequence()">ترجمة</button>
+                    <button class="clear-btn" onclick="clearInput()">مسح</button>
+                    <button class="example-btn" onclick="loadExample()">مثال</button>
+                </div>
+                
+                <div class="example-info" id="example-description">
+                    مثال RNA: AUGUUUUCUAAAUGGCCUACGGGUAG
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">معلومات:</div>
+                    <p>أدخل تسلسل RNA باستخدام الأحرف A, U, G, C فقط. سيبدأ الترجمة من رامزة البداية AUG ويتوقف عند رامزة التوقف.</p>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <h2 class="section-title"> نتيجة الترجمة</h2>
+                <div class="result-box">
+                    <div id="protein-result" class="protein-sequence">النتيجة ستظهر هنا...</div>
+                    <div id="message"></div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">معلومات البروتين:</div>
+                    <p id="protein-info">لم يتم إنتاج بروتين بعد.</p>
+                </div>
+                
+                <button class="table-toggle-btn" onclick="toggleTable()">إظهار/إخفاء جدول الترجمة</button>
+                
+                <div class="translation-table-container" id="table-container">
+                    <table id="translation-table">
+                        <thead>
+                            <tr>
+                                <th>الرامزة</th>
+                                <th>الحمض الأميني</th>
+                                <th>الرامزة</th>
+                                <th>الحمض الأميني</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                       
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>أداة محاكاة لبرنامج أناجين - مخصصة للطلاب الجزائريين</p>
+            <div class="creator">تم الإنشاء بواسطة: محمد بوكرش</div>
+        </footer>
+    </div>
+
+    <script>
+        const geneticCode = {
+            "UUU": "Phe", "UUC": "Phe", "UUA": "Leu", "UUG": "Leu",
+            "CUU": "Leu", "CUC": "Leu", "CUA": "Leu", "CUG": "Leu",
+            "AUU": "Ile", "AUC": "Ile", "AUA": "Ile", "AUG": "Met",
+            "GUU": "Val", "GUC": "Val", "GUA": "Val", "GUG": "Val",
+            "UCU": "Ser", "UCC": "Ser", "UCA": "Ser", "UCG": "Ser",
+            "CCU": "Pro", "CCC": "Pro", "CCA": "Pro", "CCG": "Pro",
+            "ACU": "Thr", "ACC": "Thr", "ACA": "Thr", "ACG": "Thr",
+            "GCU": "Ala", "GCC": "Ala", "GCA": "Ala", "GCG": "Ala",
+            "UAU": "Tyr", "UAC": "Tyr", "UAA": "Stop", "UAG": "Stop",
+            "CAU": "His", "CAC": "His", "CAA": "Gln", "CAG": "Gln",
+            "AAU": "Asn", "AAC": "Asn", "AAA": "Lys", "AAG": "Lys",
+            "GAU": "Asp", "GAC": "Asp", "GAA": "Glu", "GAG": "Glu",
+            "UGU": "Cys", "UGC": "Cys", "UGA": "Stop", "UGG": "Trp",
+            "CGU": "Arg", "CGC": "Arg", "CGA": "Arg", "CGG": "Arg",
+            "AGU": "Ser", "AGC": "Ser", "AGA": "Arg", "AGG": "Arg",
+            "GGU": "Gly", "GGC": "Gly", "GGA": "Gly", "GGG": "Gly"
+        };
+
+        const aminoAcidArabic = {
+            "Phe": "فينيل ألانين", "Leu": "ليوسين", "Ile": "إيزوليوسين", 
+            "Met": "ميثيونين", "Val": "فالين", "Ser": "سيرين", 
+            "Pro": "برولين", "Thr": "ثريونين", "Ala": "ألانين", 
+            "Tyr": "تيروسين", "Stop": "كودون توقف", "His": "هيستيدين", 
+            "Gln": "جلوتامين", "Asn": "أسباراجين", "Lys": "لايسين", 
+            "Asp": "أسبارتيك", "Glu": "جلوتاميك", "Cys": "سيستئين", 
+            "Trp": "تريبتوفان", "Arg": "أرجينين", "Gly": "جلايسين"
+        };
+        const examples = {
+            rna: {
+                "5-3": "AUGUUUUCUAAAUGGCCUACGGGUAG",
+                description: "مثال RNA: AUGUUUUCUAAAUGGCCUACGGGUAG"
+            },
+            dna: {
+                "5-3": "ATGTTTTCTAAATGGCCCTACGGGTAG",
+                "3-5": "GATGGGGCATAAATCTTTTUGTA", // سيتم عكسه تلقائياً
+                description: "مثال DNA: ATGTTTTCTAAATGGCCCTACGGGTAG"
+            }
+        };
+        function populateTranslationTable() {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+            
+            const codons = Object.keys(geneticCode);
+            const rows = [];
+            
+            for (let i = 0; i < codons.length; i += 2) {
+                const codon1 = codons[i];
+                const codon2 = i + 1 < codons.length ? codons[i + 1] : '';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="codon">${codon1}</td>
+                    <td class="amino-acid">${geneticCode[codon1]} (${aminoAcidArabic[geneticCode[codon1]]})</td>
+                    <td class="codon">${codon2}</td>
+                    <td class="amino-acid">${codon2 ? geneticCode[codon2] + ' (' + aminoAcidArabic[geneticCode[codon2]] + ')' : ''}</td>
+                `;
+                rows.push(row);
+            }
+            
+            for (let i = rows.length - 1; i >= 0; i--) {
+                tableBody.appendChild(rows[i]);
+            }
+        }
+        function validateSequence(sequence, type) {
+            const validChars = type === 'rna' ? /^[AUCG]+$/i : /^[ATGC]+$/i;
+            return validChars.test(sequence);
+        }
+        function dnaToRna(dnaSequence) {
+            return dnaSequence.toUpperCase().replace(/T/g, 'U');
+        }
+        function reverseSequence(sequence) {
+            return sequence.split('').reverse().join('');
+        }
+        function toggleSequenceOptions() {
+            const sequenceType = document.getElementById('sequence-type').value;
+            const directionSelect = document.getElementById('direction');
+            const directionNote = document.getElementById('direction-note');
+            const sequenceInput = document.getElementById('sequence-input');
+            const exampleDescription = document.getElementById('example-description');
+            
+            if (sequenceType === 'rna') {
+                directionSelect.value = '5-3';
+                directionSelect.disabled = true;
+                directionNote.textContent = '(لـ RNA: 5\' → 3\' فقط)';
+                sequenceInput.placeholder = 'أدخل تسلسل RNA هنا (مثال: AUGUUUUCUAAA...)';
+                exampleDescription.textContent = examples.rna.description;
+            } else {
+                directionSelect.disabled = false;
+                directionNote.textContent = '';
+                sequenceInput.placeholder = 'أدخل تسلسل DNA هنا (مثال: ATGTTTTCTAAA...)';
+                exampleDescription.textContent = examples.dna.description;
+            }
+            
+            updateSequenceInfo();
+        }
+
+        function getProcessedSequence() {
+            const sequenceInput = document.getElementById('sequence-input').value.toUpperCase().trim();
+            const sequenceType = document.getElementById('sequence-type').value;
+            const direction = document.getElementById('direction').value;
+            let processedSequence = sequenceInput;
+            if (!validateSequence(processedSequence, sequenceType)) {
+                showMessage(`تسلسل ${sequenceType.toUpperCase()} يجب أن يحتوي على الأحرف ${sequenceType === 'rna' ? 'A, U, C, G' : 'A, T, C, G'} فقط`, 'error');
+                return null;
+            }
+            
+            if (sequenceType === 'dna') {
+                processedSequence = dnaToRna(processedSequence);
+            }
+            if (sequenceType === 'dna' && direction === '3-5') {
+                processedSequence = reverseSequence(processedSequence);
+            }
+            
+            return processedSequence;
+        }
+        function updateSequenceInfo() {
+            const sequenceInput = document.getElementById('sequence-input').value.trim();
+            const sequenceType = document.getElementById('sequence-type').value;
+            const sequenceLength = sequenceInput.length;
+            
+            document.getElementById('sequence-length').textContent = `الطول: ${sequenceLength} قاعدة`;
+            
+            const isValid = sequenceInput === '' || validateSequence(sequenceInput, sequenceType);
+            document.getElementById('sequence-valid').textContent = `صالح: ${isValid ? 'نعم' : 'لا'}`;
+            document.getElementById('sequence-valid').style.color = isValid ? 'var(--secondary)' : 'var(--accent)';
+        }
+
+
+        function loadExample() {
+            const sequenceType = document.getElementById('sequence-type').value;
+            const direction = document.getElementById('direction').value;
+            
+            let exampleSequence = "";
+            
+            if (sequenceType === 'rna') {
+                exampleSequence = examples.rna["5-3"];
+            } else {
+                exampleSequence = examples.dna[direction];
+            }
+            
+            document.getElementById('sequence-input').value = exampleSequence;
+            updateSequenceInfo();
+            translateSequence();
+        }
+
+
+        function translateSequence() {
+            const processedSequence = getProcessedSequence();
+            if (!processedSequence) return;
+            
+            const proteinResult = document.getElementById('protein-result');
+            const messageDiv = document.getElementById('message');
+            const proteinInfo = document.getElementById('protein-info');
+            messageDiv.innerHTML = '';
+            
+            const startIndex = processedSequence.indexOf('AUG');
+            if (startIndex === -1) {
+                showMessage('لم يتم العثور على كودون بداية (AUG)', 'error');
+                proteinInfo.textContent = 'لم يتم العثور على كودون بداية (AUG)';
+                return;
+            }
+            
+
+            let proteinSequence = '';
+            let translationDetails = [];
+            let aminoAcidCount = 0;
+            
+            for (let i = startIndex; i < processedSequence.length - 2; i += 3) {
+                const codon = processedSequence.substring(i, i + 3);
+                
+                if (geneticCode[codon] === 'Stop') {
+                    translationDetails.push({ codon, aminoAcid: 'Stop', arabicName: 'كودون توقف' });
+                    break;
+                }
+                
+                if (geneticCode[codon]) {
+                    proteinSequence += geneticCode[codon] + '-';
+                    translationDetails.push({ 
+                        codon, 
+                        aminoAcid: geneticCode[codon], 
+                        arabicName: aminoAcidArabic[geneticCode[codon]] 
+                    });
+                    aminoAcidCount++;
+                }
+            }
+            
+
+            if (proteinSequence.endsWith('-')) {
+                proteinSequence = proteinSequence.slice(0, -1);
+            }
+            
+            proteinResult.textContent = proteinSequence || 'لم يتم إنتاج بروتين';
+            
+            if (proteinSequence) {
+                showMessage(`تمت الترجمة بنجاح! تم إنتاج بروتين مكون من ${aminoAcidCount} حمض أميني.`, 'success');
+                proteinInfo.textContent = `البروتين مكون من ${aminoAcidCount} حمض أميني، بدءًا من الموضع ${startIndex + 1}`;
+                
+
+                updateTableWithHighlights(translationDetails);
+            } else {
+                showMessage('لم يتم إنتاج بروتين من التسلسل المدخل', 'error');
+                proteinInfo.textContent = 'لم يتم إنتاج بروتين من التسلسل المدخل';
+            }
+        }
+
+
+        function updateTableWithHighlights(translationDetails) {
+            const tableRows = document.querySelectorAll('#table-body tr');
+            
+
+            tableRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => {
+                    cell.style.backgroundColor = '';
+                    cell.style.color = '';
+                });
+            });
+
+            translationDetails.forEach(detail => {
+                tableRows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    for (let i = 0; i < cells.length; i += 2) {
+                        if (cells[i].textContent === detail.codon) {
+                            cells[i].style.backgroundColor = 'rgba(42, 157, 143, 0.3)';
+                            cells[i].style.color = 'var(--secondary)';
+                            cells[i+1].style.backgroundColor = 'rgba(42, 157, 143, 0.3)';
+                            cells[i+1].style.color = 'var(--secondary)';
+                        }
+                    }
+                });
+            });
+        }
+
+        function toggleTable() {
+            const tableContainer = document.getElementById('table-container');
+            tableContainer.classList.toggle('show');
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function clearInput() {
+            document.getElementById('sequence-input').value = '';
+            document.getElementById('protein-result').textContent = 'النتيجة ستظهر هنا...';
+            document.getElementById('message').innerHTML = '';
+            document.getElementById('protein-info').textContent = 'لم يتم إنتاج بروتين بعد.';
+
+            const tableRows = document.querySelectorAll('#table-body tr');
+            tableRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => {
+                    cell.style.backgroundColor = '';
+                    cell.style.color = '';
+                });
+            });
+            
+            updateSequenceInfo();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            populateTranslationTable();
+            updateSequenceInfo();
+            toggleSequenceOptions(); 
+
+            document.getElementById('sequence-input').addEventListener('input', updateSequenceInfo);
+            document.getElementById('sequence-type').addEventListener('change', updateSequenceInfo);
+        });
+    </script>
+</body>
+</html>
